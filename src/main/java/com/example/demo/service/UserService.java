@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.demo.pojo.User;
 import com.example.demo.pojo.UserDTO;
 
+import java.util.List;
+
 public interface UserService extends IService<User> {
     void addUser(UserDTO userDTO);
 
@@ -15,5 +17,7 @@ public interface UserService extends IService<User> {
 
     String getUserNameById(Integer id);
 
-    User updateUser(User user);
+    void updateUser(User user);
+
+    List<User> getList();
 }

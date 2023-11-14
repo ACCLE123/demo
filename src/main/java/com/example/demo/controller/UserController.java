@@ -10,6 +10,8 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/user")
 @Slf4j
@@ -17,22 +19,42 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
+    /**
+     * 新增用户
+     * @param userDTO
+     */
     @PostMapping
-//    @CachePut(cacheNames = "userCache", key = "#userDTO.name")
     public void addUser(@RequestBody UserDTO userDTO) {
         userService.addUser(userDTO);
     }
 
+    /**
+     * 获取全部用户
+     * @return
+     */
+    @GetMapping
+    public List<User> list() {
+        List<User> list = userService.getList();
+        return list;
+    }
+    /**
+     * 通过id 获取用户
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Integer id) {
         return userService.getUserById(id);
     }
 
-    @GetMapping
-    @Cacheable(cacheNames = "userCache", key = "#name")
-    public User getUserByName(@RequestParam String name) {
-        log.info("getUserByName: {}", name);
-        return userService.getUserByName(name);
+    /**
+     * 修改用户
+     * @param user
+     * @return
+     */
+    @PutMapping
+    public void updateUser(@RequestBody User user) {
+        userService.updateUser(user);
     }
 
     @DeleteMapping
@@ -48,9 +70,5 @@ public class UserController {
         return userService.getUserNameById(id);
     }
 
-    @PutMapping
-    public User updateUser(@RequestBody User user) {
-        log.info("update {}", user);
-        return userService.updateUser(user);
-    }
+
 }
